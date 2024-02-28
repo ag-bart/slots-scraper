@@ -1,7 +1,6 @@
 import json
 from bs4 import BeautifulSoup
 
-
 from slots_scraper.parsing.config import soup_config
 from slots_scraper.parsing.helpers import _extract_api_credentials
 from slots_scraper.parsing.exceptions import (
@@ -10,12 +9,11 @@ from slots_scraper.parsing.exceptions import (
     NoDoctorError,
     TokenNotFoundError
 )
-
 from slots_scraper.models import _AuthResponse
 
 
 class HtmlParser:
-    def __init__(self, html_content, config=soup_config):
+    def __init__(self, html_content: str, config=soup_config):
         self.config = config
         self._html_content = html_content
         self.soup = self._parse_html()
@@ -25,7 +23,7 @@ class HtmlParser:
         return self._html_content
 
     @html_content.setter
-    def html_content(self, new_html_content):
+    def html_content(self, new_html_content: str):
         self._html_content = new_html_content
         self.soup = self._parse_html()
 
@@ -51,7 +49,7 @@ class HtmlParser:
 
         return active_addresses_ids[0]  # TODO: multiple active addresses
 
-    def find_doctor_id(self):
+    def find_doctor_id(self) -> str:
         doctor_id = self.soup.find(name=self.config.DOCTOR_ID_TAG)
         if not doctor_id:
             raise NoDoctorError()
@@ -68,5 +66,5 @@ class HtmlParser:
         calendar_addresses = json.loads(calendars)
         return calendar_addresses
 
-    def _parse_html(self):
+    def _parse_html(self) -> BeautifulSoup:
         return BeautifulSoup(self._html_content, self.config.PARSER)

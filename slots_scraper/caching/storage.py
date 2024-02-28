@@ -10,7 +10,7 @@ from slots_scraper.parsing import get_token_and_params
 _TOKEN_KEY = "slotsScraper_token.json"
 
 
-def load_cached_values(url: str):
+def load_cached_values(url: str) -> tuple[str, DoctorParams]:
     doc_params_key = utils.cache_key_from_url(url=url)
     doc_params = _cached_doctor_params(doc_params_key)
 
@@ -34,16 +34,17 @@ def _store_token(token: _Token) -> None:
     cache.store((RootModel[_Token](token).model_dump_json()), key=_TOKEN_KEY)
 
 
-def _cached_doctor_params(params_key) -> DoctorParams | None:
+def _cached_doctor_params(params_key: str) -> DoctorParams | None:
     if cached := cache.get(params_key):
         return DoctorParams.model_validate_json(cached)
     return None
 
 
-def _store_doctor_params(params: DoctorParams, params_key) -> None:
+def _store_doctor_params(params: DoctorParams, params_key: str) -> None:
     cache.store(params.model_dump_json(), key=params_key)
 
 
-def _refresh_cache(token, params, params_key) -> None:
+def _refresh_cache(
+        token: _Token, params: DoctorParams, params_key: str) -> None:
     _store_token(token)
     _store_doctor_params(params, params_key)

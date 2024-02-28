@@ -36,12 +36,12 @@ def get_token_and_params(url: str) -> tuple[_Token, DoctorParams]:
     return token, doctor_params
 
 
-def _get_doctor_params(soup) -> DoctorParams:
+def _get_doctor_params(soup: parsing.HtmlParser) -> DoctorParams:
     doc_id = soup.find_doctor_id()
     addr_id = soup.find_active_address_id()
     return DoctorParams(doctor_id=doc_id, address_id=addr_id)
 
 
-def _get_token(soup) -> _Token:
+def _get_token(soup: parsing.HtmlParser) -> _Token:
     auth = soup.find_auth_credentials()
     return _Token.from_auth_response(auth)

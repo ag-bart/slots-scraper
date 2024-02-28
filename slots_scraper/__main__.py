@@ -1,14 +1,17 @@
 import argparse
 import sys
+
 import pendulum
 import requests
+
 from urllib.parse import urlparse
+
 from slots_scraper.models import QueryParams, Arguments, DoctorParams
 from slots_scraper.constants import USER_AGENT, BASE_HEADERS
 from slots_scraper import caching
 
 
-def main():
+def main() -> int:
     headers, url, params = _prepare_request()
 
     session = requests.Session()
@@ -38,7 +41,7 @@ def _prepare_request():
     return headers, request_url, params
 
 
-def _parse_args():
+def _parse_args() -> Arguments:
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-u", "--url", required=True, type=str,
@@ -51,7 +54,7 @@ def _parse_args():
     return Arguments(url=args.url, weeks_offset=args.weeks, url_domain=domain)
 
 
-def _construct_request_headers(url, access_token, domain):
+def _construct_request_headers(url: str, access_token: str, domain: str):
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Host": domain,
