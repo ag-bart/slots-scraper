@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing_extensions import Annotated
 import pendulum
 
 from pydantic import (
@@ -58,10 +59,15 @@ class DoctorParams(BaseModel):
     def transform_id_to_str(cls, value) -> str:
         return str(value)
 
+IsoStr = Annotated[
+    DateTime, PlainSerializer(lambda x: x.isoformat(timespec='seconds'),
+                              return_type=str)
+]
+
 
 class QueryParams(BaseModel):
-    start_date: DateTime
-    end_date: DateTime
+    start_date: IsoStr
+    end_date: IsoStr
 
 
 class Arguments(BaseModel):

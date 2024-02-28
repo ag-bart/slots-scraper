@@ -24,11 +24,9 @@ def _prepare_request():
     url = args.url
     domain = args.url_domain
 
-    start = pendulum.today()
-    end = start.add(weeks=args.weeks_offset)
+    params = _construct_query_params(weeks_offset=args.weeks_offset)
 
     access_token, doctor_params = caching.load_cached_values(url)
-    query_params = QueryParams(start_date=start, end_date=end)
 
     headers = _construct_request_headers(url=url,
                                          domain=domain,
@@ -37,15 +35,6 @@ def _prepare_request():
     request_url = _construct_request_url(
         path_params=doctor_params, domain=domain)
 
-    params = {
-        "start": query_params.start_date.isoformat(),
-        "end": query_params.end_date.isoformat(),
-        "includingSaasOnlyCalendar": "false",
-        "with[]": [
-            "address.nearest_slot_after_end",
-            "slot.with_booked",
-        ]
-    }
     return headers, request_url, params
 
 
@@ -77,6 +66,28 @@ def _construct_request_url(path_params: DoctorParams, domain: str):
     doctor_id, address_id = path_params.doctor_id, path_params.address_id,
     url = f"https://{domain}/api/v3/doctors/{doctor_id}/addresses/{address_id}/slots"
     return url
+
+
+def _construct_query_params(weeks_offset: int):
+    start = pendulum.today()
+    end = start.add(weeks=weeks_offset)
+    query_params = QueryParams(start_date=start, end_date=end).dict()
+
+    params = {
+        "start": query_params["start_date"],
+        "end": query_params["end_date"],
+        "includingSaasOnlyCalendar": "false",
+        "with[]": [
+            "address.nearest_slot_after_end",
+            "links.book.patient",
+            "slot.doctor_id",
+            "slot.address_id",
+            "slot.address",
+            "slot.with_booked"
+        ],
+    }
+
+    return params
 
 
 if __name__ == "__main__":
