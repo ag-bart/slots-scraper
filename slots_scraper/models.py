@@ -8,8 +8,8 @@ from pydantic import (
     Field,
     ConfigDict,
     computed_field,
-    field_validator,
-    PositiveInt
+    PositiveInt,
+    PlainSerializer
 )
 from pydantic.dataclasses import dataclass
 
@@ -51,13 +51,10 @@ class _Token:
 
 
 class DoctorParams(BaseModel):
+    model_config = ConfigDict(coerce_numbers_to_str=True)
     doctor_id: str
     address_id: str
 
-    @field_validator("doctor_id", "address_id", mode='before')
-    @classmethod
-    def transform_id_to_str(cls, value) -> str:
-        return str(value)
 
 IsoStr = Annotated[
     DateTime, PlainSerializer(lambda x: x.isoformat(timespec='seconds'),
