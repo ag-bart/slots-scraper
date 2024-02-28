@@ -1,16 +1,11 @@
 import argparse
-import os
 import sys
 import pendulum
 import requests
-
+from urllib.parse import urlparse
 from slots_scraper.models import QueryParams, Arguments, DoctorParams
 from slots_scraper.constants import USER_AGENT, BASE_HEADERS
 from slots_scraper import caching
-
-from dotenv import load_dotenv
-
-dtv = load_dotenv()
 
 
 def main():
@@ -27,6 +22,7 @@ def main():
 def _prepare_request():
     args = _parse_args()
     url = args.url
+    domain = args.url_domain
 
     start = pendulum.today()
     end = start.add(weeks=args.weeks_offset)
@@ -34,8 +30,12 @@ def _prepare_request():
     access_token, doctor_params = caching.load_cached_values(url)
     query_params = QueryParams(start_date=start, end_date=end)
 
-    headers = _construct_headers(url=url, access_token=access_token)
-    request_url = _prepare_request_url(path_params=doctor_params)
+    headers = _construct_request_headers(url=url,
+                                         domain=domain,
+                                         access_token=access_token)
+
+    request_url = _construct_request_url(
+        path_params=doctor_params, domain=domain)
 
     params = {
         "start": query_params.start_date.isoformat(),
@@ -58,13 +58,14 @@ def _parse_args():
                         help="Search time range from today (in weeks).")
 
     args = parser.parse_args()
-    return Arguments(url=args.url, weeks_offset=args.weeks)
+    domain = urlparse(url=args.url).netloc
+    return Arguments(url=args.url, weeks_offset=args.weeks, url_domain=domain)
 
 
-def _construct_headers(url, access_token):
+def _construct_request_headers(url, access_token, domain):
     headers = {
         "Authorization": f"Bearer {access_token}",
-        "Host": os.getenv('HOST'),
+        "Host": domain,
         "Referer": url,
         "User-Agent": USER_AGENT
     }
@@ -72,10 +73,9 @@ def _construct_headers(url, access_token):
     return BASE_HEADERS | headers
 
 
-def _prepare_request_url(path_params: DoctorParams):
-    domain = os.getenv('DOMAIN')
-    doctor_id, address_id = path_params.doctor_id, path_params.address_id
-    url = f"{domain}/api/v3/doctors/{doctor_id}/addresses/{address_id}/slots"
+def _construct_request_url(path_params: DoctorParams, domain: str):
+    doctor_id, address_id = path_params.doctor_id, path_params.address_id,
+    url = f"https://{domain}/api/v3/doctors/{doctor_id}/addresses/{address_id}/slots"
     return url
 
 

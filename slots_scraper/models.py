@@ -67,3 +67,4 @@ class QueryParams(BaseModel):
 class Arguments(BaseModel):
     url: str
     weeks_offset: PositiveInt
+    url_domain: str
