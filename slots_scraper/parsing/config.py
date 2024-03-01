@@ -2,8 +2,6 @@ from pydantic_settings import BaseSettings
 
 
 class SoupConfig(BaseSettings):
-    PARSER: str = "html.parser"
-
     AUTH_TAG: str = "script"
     AUTH_KEY: str = "'ACCESS_TOKEN'"
 

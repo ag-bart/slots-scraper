@@ -67,4 +67,4 @@ class HtmlParser:
         return calendar_addresses
 
     def _parse_html(self) -> BeautifulSoup:
-        return BeautifulSoup(self._html_content, self.config.PARSER)
+        return BeautifulSoup(self._html_content, 'html.parser')
