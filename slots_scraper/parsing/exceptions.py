@@ -3,7 +3,7 @@ class HtmlParserError(Exception):
     """Base exception class for HtmlParser errors."""
 
 
-class NoActiveCalendarError(HtmlParserError):
+class ActiveCalendarNotFoundError(HtmlParserError):
     def __init__(self):
         super().__init__("The requested doctor has no active calendars!")
 
@@ -14,12 +14,12 @@ class TagNotFoundError(HtmlParserError):
                          "Check Parser configuration and page source.")
 
 
-class NoAddressError(TagNotFoundError):
+class AddressNotFoundError(TagNotFoundError):
     def __init__(self):
         super().__init__("address ID")
 
 
-class NoDoctorError(TagNotFoundError):
+class DoctorNotFoundError(TagNotFoundError):
     def __init__(self):
         super().__init__("doctor ID")
 

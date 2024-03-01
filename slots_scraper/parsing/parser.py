@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 from slots_scraper.parsing.config import soup_config
 from slots_scraper.parsing.helpers import _extract_api_credentials
 from slots_scraper.parsing.exceptions import (
-    NoActiveCalendarError,
-    NoAddressError,
-    NoDoctorError,
+    ActiveCalendarNotFoundError,
+    AddressNotFoundError,
+    DoctorNotFoundError,
     TokenNotFoundError
 )
 from slots_scraper.models import _AuthResponse
@@ -45,14 +45,14 @@ class HtmlParser:
             if addr[self.config.ADDRESS_IS_ACTIVE_KEY]
         ]
         if len(active_addresses_ids) < 1:
-            raise NoActiveCalendarError()
+            raise ActiveCalendarNotFoundError()
 
         return active_addresses_ids[0]  # TODO: multiple active addresses
 
     def find_doctor_id(self) -> str:
         doctor_id = self.soup.find(name=self.config.DOCTOR_ID_TAG)
         if not doctor_id:
-            raise NoDoctorError()
+            raise DoctorNotFoundError()
 
         return doctor_id[self.config.DOCTOR_ID_KEY]
 
@@ -61,7 +61,7 @@ class HtmlParser:
             name=self.config.CALENDAR_TAG)[self.config.CALENDAR_ADDRESSES_KEY]
 
         if not calendars:
-            raise NoAddressError()
+            raise AddressNotFoundError()
 
         calendar_addresses = json.loads(calendars)
         return calendar_addresses
