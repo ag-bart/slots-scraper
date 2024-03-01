@@ -2,7 +2,7 @@ import json
 from bs4 import BeautifulSoup
 
 from slots_scraper.parsing.config import soup_config
-from slots_scraper.parsing.helpers import _extract_api_credentials
+from slots_scraper.parsing.utils import _extract_api_credentials
 from slots_scraper.parsing.exceptions import (
     ActiveCalendarNotFoundError,
     AddressNotFoundError,
