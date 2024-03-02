@@ -9,7 +9,9 @@ from pydantic import (
     ConfigDict,
     computed_field,
     PositiveInt,
-    PlainSerializer
+    PlainSerializer,
+    field_validator,
+    TypeAdapter
 )
 from pydantic.dataclasses import dataclass
 
@@ -71,3 +73,20 @@ class Arguments(BaseModel):
     url: str
     weeks_offset: PositiveInt
     url_domain: str
+
+
+class Slot(BaseModel):
+    start: str
+    booked: bool
+    booking_url: str | None
+
+    @field_validator('start', mode='before')
+    @classmethod
+    def format_date(cls, value) -> str:
+        dt = utils.to_datetime(value)
+        if dt is not None:
+            return dt.format("dddd DD MMMM, HH:mm", locale='pl')
+        return ""
+
+
+adapter = TypeAdapter(list[Slot])

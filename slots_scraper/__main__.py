@@ -3,10 +3,11 @@ import sys
 
 import pendulum
 import requests
+import pandas as pd
 
 from urllib.parse import urlparse
 
-from slots_scraper.models import QueryParams, Arguments, DoctorParams
+from slots_scraper.models import QueryParams, Arguments, DoctorParams, adapter
 from slots_scraper.constants import USER_AGENT, BASE_HEADERS
 from slots_scraper import caching
 
@@ -17,7 +18,10 @@ def main() -> int:
     session = requests.Session()
     response = session.get(url, headers=headers, params=params)
 
-    print(response.json())
+    data = response.json()['_items']
+    slots = adapter.validate_python(data)
+    df = pd.DataFrame(adapter.dump_python(slots))
+    print(df.to_markdown())
 
     return 0
 
@@ -72,7 +76,7 @@ def _construct_request_url(path_params: DoctorParams, domain: str):
 
 
 def _construct_query_params(weeks_offset: int):
-    start = pendulum.today()
+    start = pendulum.now()
     end = start.add(weeks=weeks_offset)
     query_params = QueryParams(start_date=start, end_date=end).dict()
 
