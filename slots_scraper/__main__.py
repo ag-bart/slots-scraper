@@ -48,10 +48,20 @@ def _prepare_request():
 def _parse_args() -> Arguments:
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-u", "--url", required=True, type=str,
-                        help="URL for the doctor profile.")
-    parser.add_argument("--weeks", required=True, type=int,
-                        help="Search time range from today (in weeks).")
+    parser.add_argument(
+        "-u",
+        "--url",
+        required=True,
+        type=str,
+        help="URL for the doctor profile."
+    )
+    parser.add_argument(
+        "--weeks",
+        required=False,
+        type=int,
+        default=1,
+        help="Search time range from today (in weeks). Default: 1 week."
+    )
 
     args = parser.parse_args()
     domain = urlparse(url=args.url).netloc
