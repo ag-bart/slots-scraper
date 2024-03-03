@@ -3,7 +3,7 @@ import sys
 
 import pendulum
 import requests
-import pandas as pd
+from tabulate import tabulate
 
 from urllib.parse import urlparse
 
@@ -20,8 +20,11 @@ def main() -> int:
 
     data = response.json()['_items']
     slots = adapter.validate_python(data)
-    df = pd.DataFrame(adapter.dump_python(slots))
-    print(df.to_markdown())
+
+    print(tabulate(adapter.dump_python(slots),
+                   headers='keys',
+                   tablefmt='pipe',
+                   showindex=True))
 
     return 0
 
