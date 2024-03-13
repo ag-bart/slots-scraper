@@ -18,8 +18,8 @@ def to_datetime(raw: str) -> pendulum.DateTime | None:
     return None
 
 
-def dt_from_timestamp(ts: int) -> pendulum.DateTime | None:
-    dt = pendulum.from_timestamp(timestamp=ts)
+def dt_from_timestamp(ts: int, timezone='local') -> pendulum.DateTime | None:
+    dt = pendulum.from_timestamp(timestamp=ts, tz=timezone)
     if _is_datetime(dt):
         return dt
     return None
