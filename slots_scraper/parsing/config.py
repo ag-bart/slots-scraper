@@ -1,17 +1,18 @@
 from pydantic_settings import BaseSettings
 
 
-class SoupConfig(BaseSettings):
-    AUTH_TAG: str = "script"
+class AuthConfig(BaseSettings):
     AUTH_KEY: str = "'ACCESS_TOKEN'"
+    AUTH_REGEX: str = r'APICredentials\s*=\s*({.*?});'
 
+
+class ParamsConfig(BaseSettings):
     CALENDAR_TAG: str = "calendar-app"
     CALENDAR_ADDRESSES_KEY: str = ":calendar-addresses"
-    ADDRESS_ID_KEY: str = "id"
-    ADDRESS_IS_ACTIVE_KEY: str = "hasActiveCalendar"
 
     DOCTOR_ID_TAG: str = "save-doctor-app"
     DOCTOR_ID_KEY: str = ":doctor-id"
 
 
-soup_config = SoupConfig()
+auth_config = AuthConfig()
+params_config = ParamsConfig()

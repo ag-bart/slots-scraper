@@ -14,9 +14,9 @@ class TagNotFoundError(HtmlParserError):
                          "Check Parser configuration and page source.")
 
 
-class AddressNotFoundError(TagNotFoundError):
+class CalendarNotFoundError(TagNotFoundError):
     def __init__(self):
-        super().__init__("address ID")
+        super().__init__("address calendar")
 
 
 class DoctorNotFoundError(TagNotFoundError):
@@ -24,6 +24,6 @@ class DoctorNotFoundError(TagNotFoundError):
         super().__init__("doctor ID")
 
 
-class TokenNotFoundError(TagNotFoundError):
+class CredentialsNotFoundError(TagNotFoundError):
     def __init__(self):
         super().__init__("authentication token")
