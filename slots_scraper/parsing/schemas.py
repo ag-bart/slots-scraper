@@ -42,7 +42,7 @@ class Services(BaseModel):
 class AddressCalendar(BaseModel):
     model_config = alias_config
 
-    calendar_id: int
+    id: int
     facility_id: int | None
     has_active_calendar: bool
     is_online_only: bool
