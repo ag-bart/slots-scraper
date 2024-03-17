@@ -18,22 +18,6 @@ from slots_scraper import utils
 from slots_scraper.pydantic_pendulum import DateTime
 
 
-class _AuthResponse(BaseModel):
-    model_config = ConfigDict(alias_generator=lambda x: x.upper())
-
-    access_token: str
-    access_token_expiration_time: int
-    refresh_token: str | None
-    refresh_token_expiration_time: str | None
-    token_url: str = Field(exclude=True)
-
-    @computed_field
-    @property
-    def expires_at(self) -> str:
-        return utils.dt_from_timestamp(
-            self.access_token_expiration_time).to_datetime_string()
-
-
 class _Token(BaseModel):
     token: str = Field(validation_alias=AliasChoices('access_token', 'token'))
     expires_at: str
