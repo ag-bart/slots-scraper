@@ -13,3 +13,6 @@ BASE_HEADERS = {
     }
 
 
+class CachePrefixes:
+    TOKEN: str = 'auth'
+    PARAMS: str = 'doc'

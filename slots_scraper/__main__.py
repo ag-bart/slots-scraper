@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 from slots_scraper.models import QueryParams, Arguments, DoctorParams, adapter
 from slots_scraper.constants import USER_AGENT, BASE_HEADERS
-from slots_scraper import caching
+from slots_scraper.prepare_request import load_cached_values
 
 
 def main() -> int:
@@ -17,6 +17,7 @@ def main() -> int:
 
     session = requests.Session()
     response = session.get(url, headers=headers, params=params)
+    response.raise_for_status()
 
     data = response.json()['_items']
     slots = adapter.validate_python(data)
@@ -36,7 +37,7 @@ def _prepare_request():
 
     params = _construct_query_params(weeks_offset=args.weeks_offset)
 
-    access_token, doctor_params = caching.load_cached_values(url)
+    access_token, doctor_params = load_cached_values(url)
 
     headers = _construct_request_headers(url=url,
                                          domain=domain,
