@@ -14,8 +14,7 @@ from pydantic import (
     field_validator
 )
 
-from slots_scraper import utils
-from slots_scraper.pydantic_pendulum import DateTime
+from slots_scraper.utils import DateTime, to_datetime
 
 
 class _Token(BaseModel):
@@ -23,7 +22,7 @@ class _Token(BaseModel):
     expires_at: str
 
     def is_expired(self) -> bool:
-        if dt := utils.to_datetime(self.expires_at):
+        if dt := to_datetime(self.expires_at):
             return dt <= pendulum.now()
         return True
 
@@ -59,7 +58,7 @@ class Slot(BaseModel):
     @field_validator('start', mode='before')
     @classmethod
     def format_date(cls, value) -> str:
-        dt = utils.to_datetime(value)
+        dt = to_datetime(value)
         if dt is not None:
             return dt.format("dddd DD MMMM, HH:mm", locale='pl')
         return ""
