@@ -10,10 +10,9 @@ from pydantic import (
     Field,
     PositiveInt,
     PlainSerializer,
-    computed_field,
+    AliasChoices,
     field_validator
 )
-from pydantic.dataclasses import dataclass
 
 from slots_scraper import utils
 from slots_scraper.pydantic_pendulum import DateTime
@@ -35,21 +34,14 @@ class _AuthResponse(BaseModel):
             self.access_token_expiration_time).to_datetime_string()
 
 
-@dataclass
-class _Token:
-    token: str
+class _Token(BaseModel):
+    token: str = Field(validation_alias=AliasChoices('access_token', 'token'))
     expires_at: str
 
     def is_expired(self) -> bool:
         if dt := utils.to_datetime(self.expires_at):
             return dt <= pendulum.now()
         return True
-
-    @classmethod
-    def from_auth_response(cls, auth_response: _AuthResponse) -> _Token:
-        return _Token(
-            token=auth_response.access_token,
-            expires_at=auth_response.expires_at)
 
 
 class DoctorParams(BaseModel):
