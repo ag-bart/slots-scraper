@@ -14,6 +14,5 @@ class ParamsConfig(BaseSettings):
     DOCTOR_ID_KEY: str = ":doctor-id"
 
 
-
-
-
+auth_config = AuthConfig()
+params_config = ParamsConfig()

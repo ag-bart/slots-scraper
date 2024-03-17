@@ -17,6 +17,7 @@ from slots_scraper.parsing.schemas import (
     AddressCalendarList,
 )
 
+from slots_scraper.parsing.config import auth_config, params_config
 from slots_scraper.models import _Token, DoctorParams
 
 
@@ -40,6 +41,9 @@ class BaseSoupInteractor:
 
 
 class AuthParser(BaseSoupInteractor):
+    def __init__(self, html_content: str | bytes, search_config=auth_config):
+        super().__init__(html_content, search_config)
+
     @property
     def auth_credentials(self) -> dict[str, Any]:
         credentials = self.soup.find(self._find_token_tag)
@@ -67,9 +71,10 @@ class AuthParser(BaseSoupInteractor):
 
 
 class ParamsParser(BaseSoupInteractor):
-    def __init__(self, html_content: str | bytes, search_config: BaseSettings):
+    def __init__(self, html_content: str | bytes, search_config=params_config):
         super().__init__(html_content, search_config)
         self._address_id = None
+
 
     @property
     def doctor_id(self) -> str:
@@ -90,7 +95,7 @@ class ParamsParser(BaseSoupInteractor):
         else:
             self._address_id = value
 
-    def get_search_params_for_doctor(self):
+    def get_doctor_params(self):
         if self.address_id is None:
             self.address_id = 'auto'
 
