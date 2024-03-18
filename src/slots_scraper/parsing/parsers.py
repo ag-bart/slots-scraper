@@ -6,21 +6,21 @@ from typing import Any, Literal, TYPE_CHECKING
 
 from bs4 import BeautifulSoup
 
-from slots_scraper.parsing.exceptions import (
+from src.slots_scraper.parsing.exceptions import (
     ActiveCalendarNotFoundError,
     CalendarNotFoundError,
     DoctorNotFoundError,
     CredentialsNotFoundError
 )
-from slots_scraper.parsing.schemas import _AuthCredentials, AddressCalendarList
+from src.slots_scraper.parsing.schemas import _AuthCredentials, AddressCalendarList
 
-from slots_scraper.parsing.config import auth_config, params_config
-from slots_scraper.models import _Token, DoctorParams
+from src.slots_scraper.parsing.config import auth_config, params_config
+from src.slots_scraper.models import _Token, DoctorParams
 
 if TYPE_CHECKING:
     from bs4.element import Tag
     from pydantic_settings import BaseSettings
-    from slots_scraper.parsing.schemas import AddressCalendar
+    from src.slots_scraper.parsing.schemas import AddressCalendar
 
 
 class BaseSoupInteractor:

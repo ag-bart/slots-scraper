@@ -7,8 +7,7 @@ from pydantic import (
 )
 from pydantic.alias_generators import to_snake, to_camel
 
-from slots_scraper import utils
-
+from src.slots_scraper import utils
 
 alias_config = ConfigDict(alias_generator=AliasGenerator(
     validation_alias=to_camel,

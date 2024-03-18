@@ -14,7 +14,7 @@ from pydantic import (
     field_validator
 )
 
-from slots_scraper.utils import DateTime, to_datetime
+from src.slots_scraper.utils import DateTime, to_datetime
 
 
 class _Token(BaseModel):

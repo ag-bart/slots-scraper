@@ -3,11 +3,11 @@ from collections import namedtuple
 import requests
 import pendulum
 
-from slots_scraper.models import DoctorParams, QueryParams, Arguments, _Token
-from slots_scraper.cache import setup_cache_manager
-from slots_scraper.parsing.parsers import AuthParser, ParamsParser
+from src.slots_scraper.models import DoctorParams, QueryParams, Arguments, _Token
+from src.slots_scraper.cache import setup_cache_manager
+from src.slots_scraper.parsing.parsers import AuthParser, ParamsParser
 
-from slots_scraper.constants import (
+from src.slots_scraper.constants import (
     CachePrefixes,
     _TOKEN_KEY,
     BASE_HEADERS,
@@ -15,8 +15,7 @@ from slots_scraper.constants import (
     USER_AGENT
 )
 
-from slots_scraper import utils
-
+from src.slots_scraper import utils
 
 _models_to_cache = {
     CachePrefixes.PARAMS: DoctorParams,
