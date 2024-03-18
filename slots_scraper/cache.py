@@ -1,5 +1,5 @@
 import pathlib
-from typing import Type, TypeVar
+from typing import Type, TypeVar, Mapping
 
 from pydantic import BaseModel
 
@@ -64,3 +64,13 @@ class CacheManager:
     @staticmethod
     def _get_prefix_from_key(key: str) -> str:
         return key.split("_", 1)[0]
+
+
+def setup_cache_manager(prefix_mapping: Mapping[str, Type[TModel]]):
+    filecache = FileCache()
+    store = ModelStore()
+
+    for prefix, model in prefix_mapping.items():
+        store.register_model_type(prefix=prefix, model_type=model)
+
+    return CacheManager(cache=filecache, model_store=store)
