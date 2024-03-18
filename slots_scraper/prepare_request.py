@@ -5,7 +5,7 @@ import pendulum
 
 from slots_scraper.models import DoctorParams, QueryParams, Arguments, _Token
 from slots_scraper.cache import setup_cache_manager
-from slots_scraper.parsing.parser import AuthParser, ParamsParser
+from slots_scraper.parsing.parsers import AuthParser, ParamsParser
 
 from slots_scraper.constants import (
     CachePrefixes,

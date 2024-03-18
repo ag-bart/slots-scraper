@@ -21,7 +21,7 @@ def main() -> int:
 
     response.raise_for_status()
 
-    data = _parse_response(response=response)
+    data = _process_response(response=response)
 
     print(tabulate(data, headers='keys', tablefmt='pipe', showindex=True))
 
@@ -51,7 +51,7 @@ def _parse_args() -> Arguments:
     return Arguments(url=args.url, weeks_offset=args.weeks, url_domain=domain)
 
 
-def _parse_response(response: requests.Response) -> list[dict]:
+def _process_response(response: requests.Response) -> list[dict]:
     data = response.json()['_items']
     slots = SlotsAdapter.validate_python(data)
     return SlotsAdapter.dump_python(slots)
