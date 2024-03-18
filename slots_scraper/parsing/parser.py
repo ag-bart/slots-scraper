@@ -93,9 +93,9 @@ class ParamsParser(BaseSoupInteractor):
     @address_id.setter
     def address_id(self, value: int | Literal['auto']):
         if value == 'auto':
-            self._address_id = self.get_active_calendars()[0].id
+            self._address_id = str(self.get_active_calendars()[0].id)
         else:
-            self._address_id = value
+            self._address_id = str(value)
 
     def get_doctor_params(self):
         if self.address_id is None:
