@@ -10,7 +10,7 @@ from pydantic_core import PydanticCustomError, core_schema
 import pendulum
 from pendulum import DateTime as _DateTime
 
-from slots_scraper.constants import CachePrefixes
+from .constants import CachePrefixes
 
 
 class DateTime(_DateTime):

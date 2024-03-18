@@ -6,8 +6,8 @@ from tabulate import tabulate
 
 from urllib.parse import urlparse
 
-from slots_scraper.models import Arguments, SlotsAdapter
-from slots_scraper.prepare_request import prepare_request
+from .models import Arguments, SlotsAdapter
+from .prepare_request import prepare_request
 
 
 def main() -> int:
