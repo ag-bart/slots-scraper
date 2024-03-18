@@ -1,9 +1,9 @@
 from pydantic import (
     BaseModel,
     ConfigDict,
-    computed_field,
     AliasGenerator,
-    TypeAdapter
+    TypeAdapter,
+    computed_field
 )
 from pydantic.alias_generators import to_snake, to_camel
 
