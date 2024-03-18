@@ -100,7 +100,7 @@ def _construct_request_headers(url: str, access_token: str, domain: str):
 
 
 def _construct_request_url(path_params: DoctorParams, domain: str):
-    doctor_id, address_id = path_params.doctor_id, path_params.address_id,
+    doctor_id, address_id = path_params.doctor_id, path_params.address_id
     url = f"https://{domain}/api/v3/doctors/{doctor_id}/addresses/{address_id}/slots"
     return url
 

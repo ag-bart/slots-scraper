@@ -5,7 +5,6 @@ class CachePrefixes:
 
 _TOKEN_KEY = "auth_token.json"
 
-
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; rv:109.0) Gecko/20100101 Firefox/116.0"
 
 BASE_HEADERS = {
