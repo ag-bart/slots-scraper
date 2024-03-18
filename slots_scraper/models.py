@@ -9,7 +9,7 @@ from pydantic import (
     TypeAdapter,
     Field,
     PositiveInt,
-    PlainSerializer,
+    AfterValidator,
     AliasChoices,
     field_validator
 )
@@ -33,10 +33,8 @@ class DoctorParams(BaseModel):
     address_id: str
 
 
-IsoStr = Annotated[
-    DateTime, PlainSerializer(lambda x: x.isoformat(timespec='seconds'),
-                              return_type=str)
-]
+IsoStr = Annotated[DateTime,
+                   AfterValidator(lambda x: x.isoformat(timespec='seconds'))]
 
 
 class QueryParams(BaseModel):
