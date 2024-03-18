@@ -62,4 +62,4 @@ class Slot(BaseModel):
         return ""
 
 
-adapter = TypeAdapter(list[Slot])
+SlotsAdapter = TypeAdapter(list[Slot])
